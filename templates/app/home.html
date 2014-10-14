@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+{% block title %}DEMO{% endblock %}
+{% block nav_user %}
+  {% if user.is_authenticated %}
+    <ul class="nav navbar-nav navbar-right">
+      <li id="nav-username"><a href="{% url 'profile' %}">
+        <span class="glyphicon glyphicon-user"></span>  {{ user.get_username }} &nbsp; </a>
+      </li>
+      <li>
+        <a href="{% url 'django.contrib.auth.views.logout' %}">Sign out</a>
+      </li>
+    </ul>
+  {% endif %}
+{% endblock %}
+{% block content %}
+	<div class="container">
+      <div class="jumbotron">
+    		<div class="container">
+              
+    		  {% if not user.is_authenticated %}
+              <div class="col-sm-offset-2 col-sm-3 pull-right">
+                <form role="form" method="post" 
+                    action="{% url 'django.contrib.auth.views.login' %}">
+                  {% csrf_token %}
+
+                  {% bootstrap_field form.username show_label=False %}
+                  {% bootstrap_field form.password show_label=False %}
+                  <input type="hidden" name="next" value="{% url 'home' %}" />
+                  <button type="submit" class="btn btn-success">Sign in</button>
+                  <a href="/login/facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-square-o fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x"></i> 
+                  </span> 
+                </a> |
+                <a href="{% url 'registration_register' %}">Register</a>
+                </form>
+              </div>
+    		  {% endif %}
+          <h1>DEMO</h1>
+          <p class="lead">Test social app</p>
+    		</div> <!-- /.container -->
+	    </div> <!-- /.jumbotron -->
+    </div> <!-- /.container -->
+    {% if user.is_authenticated %}
+      {% include "app/includes/posts_form.html" %}
+      {% include "app/includes/posts.html" %}
+    {% endif %}
+{% endblock content %}

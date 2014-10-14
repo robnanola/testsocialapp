@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+{% block title %}Update Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+  <form action="" method="post" role="form" class="form-horizontal">
+    {% csrf_token %}
+
+    {% bootstrap_field form.address layout='horizontal' %}
+    {% bootstrap_field form.phone layout='horizontal' %}
+    {% bootstrap_field form.work layout='horizontal' %}
+    {% bootstrap_field form.education layout='horizontal' %}
+
+    {% buttons %}
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-primary">
+        Update
+      </button>
+    </div>
+    {% endbuttons %}
+  </form>
+
+</div>
+{% endblock %}

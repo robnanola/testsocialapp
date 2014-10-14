@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load admin_urls %}
+{% load static from staticfiles %}
+{% load bootstrap3 %}
+{% load thumbnail %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="container">
+  <h1>Profile</h1>
+  	{% if user.user_profile.profile_picture %}
+
+  		{% thumbnail user.user_profile.profile_picture.original_image "160x160" as p_pic %}
+		    <img class="img-thumbnail" src="{{ p_pic.url }}">
+		{% endthumbnail %}
+
+  	{% else %}
+    	<img src="http://placehold.it/160x160" alt="...">
+    {% endif %}
+    <p><a href="{% url 'update_profile_picture' %}">Upload/Change Profile Picture</a></p>
+
+  <br>
+
+  <address>
+    <h4>{{ user.get_full_name }}</h4>
+  </address>
+  <address>
+    <strong>Email: </strong><br>
+    {{ user.email }}<br>
+    <strong>Work: </strong><br> 
+    {{ user.user_profile.work }}<br>
+    <strong>Address: </strong><br> 
+    {{ user.user_profile.address }}<br>
+    <strong>Phone: </strong><br> 
+    {{ user.user_profile.phone }}<br>
+    <strong>Education: </strong><br> 
+    {{ user.user_profile.education }}<br>
+  </address>
+  
+  
+  <p><a href="{% url 'django.contrib.auth.views.password_change' %}">Change password</a></p>
+  <p><a href="{% url 'profile_update' %}">Update Profile</a></p>
+</div>
+{% endblock %}

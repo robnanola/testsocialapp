@@ -1,0 +1,15 @@
+<div id="form-comment" style="margin-top:20px;">
+  <form action="/comments/post/" method="post">
+    {% csrf_token %}
+    <textarea style="width:100%;" id="id_comment" name="comment" rows="4" placeholder="comment here.."></textarea>
+    {{ form.content_type }}
+	{{ form.object_pk }}
+	{{ form.timestamp }}
+	{{ form.security_hash }}
+    <input type="hidden" name="next" value="{% url 'wall_item' post.uuid %}" />
+    <p>
+      <input type="submit" value="Submit Comment" class="btn btn-primary btn-xs"/>
+      <a href="#c0" id="cancel_reply" class="small">cancel reply</a>
+    </p>
+  </form>
+</div>

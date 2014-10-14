@@ -1,0 +1,20 @@
+{% load thumbnail %}
+{% for comment in comment_list %}
+
+	<div class="media {%cycle 'bg-success' 'bg-info'%}" id="c{{ comment.id }}">
+	  <a class="pull-left" href="#">
+	    {% if comment.user.user_profile.profile_picture %}
+	        {% thumbnail comment.user.user_profile.profile_picture.original_image "80x80" as p_pic %}
+	          <img class="media-object" src="{{ p_pic.url }}">
+	        {% endthumbnail %}
+	      {% else %}
+	        <img src="http://placehold.it/60x60" alt="...">
+	      {% endif %}
+	  </a>
+	  <div class="media-body">
+	    <a href="{%url 'user_wall' comment.user.pk %}"><strong class="media-heading small">{{comment.user}}</strong></a> | <span class="small">{{ comment.submit_date }}</span>
+	    <p class="small">{{ comment.comment }}</p>
+	  </div>
+	</div>
+{% endfor %}
+

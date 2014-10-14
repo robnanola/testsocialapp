@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load thumbnail %}
+{% block title %}Search{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="col-sm-offset-3 col-sm-6">
+    <form action="" method="post" role="form" class="form-horizontal">
+      {% csrf_token %}
+
+      {% bootstrap_field form.search layout='horizontal' %}
+
+      {% buttons %}
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary">
+          Search
+        </button>
+      </div>
+      {% endbuttons %}
+    </form>
+  </div>
+</div>
+<div class="container">
+  <div class="col-sm-offset-3 col-sm-6">
+    {% if results %}
+      {% for res in results %}
+        <div class="media bg-warning">
+          <a class="pull-left" href="#">
+            {% if user.user_profile.profile_picture %}
+              {% thumbnail user.user_profile.profile_picture.original_image "60x60" as p_pic %}
+                <img class="img-thumbnail" src="{{ p_pic.url }}">
+              {% endthumbnail %}
+
+            {% else %}
+              <img src="http://placehold.it/60x60" alt="...">
+            {% endif %}
+          </a>
+          <div class="media-body">
+            <a href="{% url 'user_wall' pk=res.object.id %}">
+              <h4 class="media-heading">{{res.object.username}}</h4>
+              <p>{{res.object.email}}</p>
+            </a>
+          </div>
+        </div>
+
+      {% endfor %}
+    {% else %}
+      <p>No results found.</>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

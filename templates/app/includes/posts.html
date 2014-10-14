@@ -1,0 +1,33 @@
+{% load bootstrap3 %}
+{% load thumbnail %}
+{% load comments %}
+
+
+<div class="container">
+  {% for post in wall_posts %}
+  <div class="col-sm-offset-3 col-sm-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <a href="{% url 'user_wall' post.author.id %}">
+          <strong>{{post.author.username}} </strong>
+        </a> -> 
+        <a href="{% url 'user_wall' post.receiver.id %}">
+        <strong>{{post.receiver.username}}</strong>
+        </a>
+      </div>
+      <div class="panel-body">
+        {{post.content}}
+        {{post.uuid}}
+      </div>
+      <div class="panel-footer">
+        <a href="{% url 'wall_item' post.uuid %}">Comments
+          {% get_comment_count for post as comment_count %}
+          
+          {{comment_count|default:""}}
+        </a>
+      </div>
+
+    </div>
+  </div>
+  {% endfor %}
+</div>

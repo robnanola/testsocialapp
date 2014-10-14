@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load thumbnail %}
+
+{% block title %}Update Profile Picture{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="col-sm-offset-3 col-sm-6">
+    <H3>Upload new profile picture.</H3>
+    <form action="" method="post" role="form" class="form-horizontal" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      
+
+      {% buttons %}
+      
+        {{form.errors}}
+        {{form.original_image}}
+        <button type="submit" class="btn btn-primary">
+          Upload
+        </button>
+      
+      {% endbuttons %}
+    </form>
+  </div>
+</div>
+  <div class="container">
+
+    <div class="col-sm-offset-3 col-sm-6">
+      <H3>Set profile picture from the existing ones.</H3>
+      {% if request.user.profile_pictures.all %}
+        {% for pic in request.user.profile_pictures.all%}
+          {% thumbnail pic.original_image "100x100" as p_pic %}
+              <img src="{{ p_pic.url }}" data-uuid="{{pic.uuid}}" class="img-thumbnail pic-selection">
+          {% endthumbnail %}
+        {% endfor %}
+        
+        <br>
+        <br>
+        <button type="button" class="btn btn-primary" id="set-pic">
+          Set
+        </button>
+
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+{% block extra_js %}
+  <script src="{{STATIC_URL}}js/bootstrap.file-input.js"></script>
+  <script type="text/javascript">
+    $(function() {
+
+      $('input[type=file]').bootstrapFileInput();
+
+      $('.pic-selection').click(function(){
+        $('.pic-selection').removeClass('selected');
+        $(this).addClass('selected');
+      })
+
+      $('#set-pic').click(function(){
+
+        //quick hack to get the csrf token
+        var token = $('input[name="csrfmiddlewaretoken"]').prop('value');
+
+        $.ajax({
+          type: "POST",
+          url: "{% url 'ajax_set_profile_picture' %}",
+          data: {
+            'csrfmiddlewaretoken':token, 
+            'uuid': $('.selected').data('uuid'),
+          },
+          success: function(data){
+            window.location = "{% url 'profile' %}";
+          },
+          dataType: 'json',
+        });
+
+      })
+    });
+  </script>
+{% endblock %}

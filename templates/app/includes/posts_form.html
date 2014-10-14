@@ -1,0 +1,50 @@
+{% load bootstrap3 %}
+{% load thumbnail %}
+{% load comments %}
+
+
+<div class="container">
+  <div class="col-sm-offset-1 col-sm-2">
+    {% if wall_owner %}
+
+      {% if user.user_profile.profile_picture %}
+        {% thumbnail user.user_profile.profile_picture.original_image "60x60" as p_pic %}
+          <img class="img-thumbnail" src="{{ p_pic.url }}">
+        {% endthumbnail %}
+      {% else %}
+        <img src="http://placehold.it/60x60" alt="...">
+      {% endif %}
+
+      <address>
+        <h4>{{ wall_owner.username }}</h4>
+      </address>
+      <address>
+        <strong>Email: </strong><br>
+        {{ wall_owner.email }}<br>
+        <strong>Work: </strong><br> 
+        {{ wall_owner.user_profile.work|default:'---' }}<br>
+        <strong>Address: </strong><br> 
+        {{ wall_owner.user_profile.address|default:'---' }}<br>
+        <strong>Phone: </strong><br> 
+        {{ wall_owner.user_profile.phone|default:'---' }}<br>
+        <strong>Education: </strong><br> 
+        {{ wall_owner.user_profile.education|default:'---' }}<br>
+      </address>
+    {% endif %}
+  </div>
+  <div class="col-sm-6">
+    <form action="" method="post" role="form" class="form-horizontal">
+      {% csrf_token %}
+      <div class="form-group">
+        <textarea class="form-control" cols="40" id="id_content" name="content" placeholder="{% if wall_owner %}Write Someting...{%else%}What's on your mind?{%endif%}" required="required" rows="4" title=""></textarea>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary pull-right">
+          Post
+        </button>
+      </div>
+    </form>
+  </div>
+
+
+</div>
