@@ -1,0 +1,4 @@
+*.pyc
+cache/*
+media/*
+SOCIAL/local_settings.py
